@@ -5,21 +5,21 @@
 - Xampp
 
 ### To install Composer download package from this link
-https://getcomposer.org/download/
+ https://getcomposer.org/download/
 
 ### Install laravel through composer
-composer global require laravel/installer
+ composer global require laravel/installer
 
 ### Installation
 - First clone this project, install dependencies
-https://github.com/Kan0n0n/bookShop.git
-composer install
+    - git clone https://github.com/Kan0n0n/bookShop.git
+    - composer install
 
 - Then create the necessary database
-php artisan make:database bookshop
+     php artisan make:database bookshop
 
 - Then run migrate
-php artisan migrate
+    php artisan migrate
 
 - To run Laravel web app use
-php artisan serve
+    php artisan serve
