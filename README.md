@@ -8,7 +8,9 @@
  https://getcomposer.org/download/
 
 ### Install laravel through composer
+```
  composer global require laravel/installer
+```
 
 ### Installation
 - First clone this project, install dependencies
@@ -18,10 +20,15 @@ composer install
 ```
 
 - Then create the necessary database
-     php artisan make:database bookshop
+```
+php artisan make:database bookshop
+```
 
 - Then run migrate
-    php artisan migrate
-
+```
+php artisan migrate
+```
 - To run Laravel web app use
-    php artisan serve
+```
+ php artisan serve
+```
