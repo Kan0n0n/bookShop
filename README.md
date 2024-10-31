@@ -12,8 +12,10 @@
 
 ### Installation
 - First clone this project, install dependencies
-    - git clone https://github.com/Kan0n0n/bookShop.git
-    - composer install
+```
+git clone https://github.com/Kan0n0n/bookShop.git
+composer install
+```
 
 - Then create the necessary database
      php artisan make:database bookshop
