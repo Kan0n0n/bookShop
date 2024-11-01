@@ -14,11 +14,10 @@
 
         <div class="box">
             <h3>extra links</h3>
-            <a href="{{route("signin")}}">Login</a>
+            <a href="{{route("login")}}">Login</a>
             <a href="{{route("signup")}}">Register</a>
             <a href="{{route("borrow")}}" class="{{request()->routeIs(patterns:'borrow') ? 'chosen' : ''}}">Borrow
                 Status</a>
-            <a href="orders.php">orders</a>
         </div>
 
         <div class="box">

@@ -43,7 +43,7 @@
                 <p>Hello, {{Auth::user()->name}}</p>
                 <a href="{{route('logout')}}" class="delete-btn">logout</a>
                 @else
-                <a href="{{route('signin')}}" class="white-btn">Login</a>
+                <a href="{{route('login')}}" class="white-btn">Login</a>
                 <a href="{{route('signup')}}" class="delete-btn">register</a>
                 @endif
             </div>

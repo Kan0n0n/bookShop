@@ -13,47 +13,47 @@
     <div class="box-container">
 
         <div class="box">
-            <img src="images/author-1.jpg" alt="">
+            <img src="{{asset('images/whynot.png')}}" alt="">
             <div class="share">
                 <a href="#" class="fab fa-facebook-f"></a>
                 <a href="#" class="fab fa-twitter"></a>
                 <a href="#" class="fab fa-instagram"></a>
                 <a href="#" class="fab fa-linkedin"></a>
             </div>
-            <h3>john</h3>
+            <h3>Trần Đức Tèo</h3>
         </div>
 
         <div class="box">
-            <img src="images/author-2.jpg" alt="">
+            <img src="images/idonthaveurimgso.png" alt="">
             <div class="share">
                 <a href="#" class="fab fa-facebook-f"></a>
                 <a href="#" class="fab fa-twitter"></a>
                 <a href="#" class="fab fa-instagram"></a>
                 <a href="#" class="fab fa-linkedin"></a>
             </div>
-            <h3>john deo</h3>
+            <h3>Nguyễn Loan (Gimme ur img so u can be on this... thing)</h3>
         </div>
 
         <div class="box">
-            <img src="images/author-3.jpg" alt="">
+            <img src="images/idonthaveurimgso.png" alt="">
             <div class="share">
                 <a href="#" class="fab fa-facebook-f"></a>
                 <a href="#" class="fab fa-twitter"></a>
                 <a href="#" class="fab fa-instagram"></a>
                 <a href="#" class="fab fa-linkedin"></a>
             </div>
-            <h3>john deo</h3>
+            <h3>Trần Thuận Phát (Gimme ur img so u can be on this... thing)</h3>
         </div>
 
         <div class="box">
-            <img src="images/author-4.jpg" alt="">
+            <img src="images/idonthaveurimgso.png" alt="">
             <div class="share">
                 <a href="#" class="fab fa-facebook-f"></a>
                 <a href="#" class="fab fa-twitter"></a>
                 <a href="#" class="fab fa-instagram"></a>
                 <a href="#" class="fab fa-linkedin"></a>
             </div>
-            <h3>john deo</h3>
+            <h3>Trần Tuấn (Gimme ur img so u can be on this... thing)</h3>
         </div>
     </div>
 

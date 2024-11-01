@@ -3,7 +3,7 @@
 @section('childContent')
 <div class="form-container">
 
-    <form action="{{route('signin.post')}}" method="post">
+    <form action="{{route('login.post')}}" method="post">
         <h3>login now</h3>
         @csrf
         <div class="form-group">

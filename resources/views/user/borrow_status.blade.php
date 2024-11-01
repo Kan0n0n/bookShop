@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody class="tb-body">
-                <tr class="tb-b ody-child">
+                <tr class="tb-body-child">
                     <td class="tb-body-child-img"><img
                             src="images/doraemon-tieu-thuyet_nobita-va-ban-giao-huong-dia-cau_bia.jpg"
                             alt="tb-body-child-img"></td>

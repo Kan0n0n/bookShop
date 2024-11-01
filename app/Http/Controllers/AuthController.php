@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -55,6 +56,8 @@ class AuthController extends Controller
                 'phone' => $request->phone,
                 'gerne' => $request->gerne,
             ]);
+
+            event(new Registered($user));
 
             Auth::login($user);
             return redirect()->route('index')->with('success', 'Registration successful');

@@ -10,7 +10,8 @@
 
     <div class="book-info-container">
         <div class="book-cover">
-            <img src="images/doraemon-tieu-thuyet_nobita-va-ban-giao-huong-dia-cau_bia.jpg" alt="Book Cover">
+            <img src="{{asset('images/doraemon-tieu-thuyet_nobita-va-ban-giao-huong-dia-cau_bia.jpg')}}"
+                alt="Book Cover">
         </div>
     </div>
 

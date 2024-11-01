@@ -63,7 +63,7 @@
             @enderror
         </div>
         <input type="submit" name="submit" value="register now" class="btn">
-        <p>already have an account? <a href="{{route('signin')}}">login now</a></p>
+        <p>already have an account? <a href="{{route('login')}}">login now</a></p>
     </form>
 </div>
 @endsection
