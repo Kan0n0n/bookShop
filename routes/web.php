@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'verified'])->name('index');
+Route::get('/', [IndexController::class, 'index'])->name('index');
 
 Route::get('/signup', [AuthController::class, 'signUpFoward'])->name('signup');
 Route::post('/signup', [AuthController::class, 'signUpFoward'])->name('signup.post');
