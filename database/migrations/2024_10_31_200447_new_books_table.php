@@ -16,8 +16,11 @@ return new class extends Migration
             $table->id('book_Id');
             $table->string('title');
             $table->string('isbn')->unique()->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('book_cover_image_path');
+            $table->integer('pages')->unsigned()->default(0);
+            $table->integer('quantity')->unsigned()->default(0);
+            $table->integer('borrowed_copies')->unsigned()->default(0);
             $table->date('released_date')->nullable();
             $table->timestamp('published_date')->nullable();
             $table->unsignedBigInteger('author_id');
@@ -28,6 +31,8 @@ return new class extends Migration
             $table->foreign('pulisher_Id')->references('pulisher_id')->on('pulishers')->onDelete('cascade');
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE books ADD CONSTRAINT check_borrowed_copies CHECK (borrowed_copies <= quantity)');
     }
 
     /**

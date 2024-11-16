@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->longText('address');
+            $table->string('phone', 10);
+            $table->string('gerne');
+            $table->date('date_of_birth');
+            $table->boolean('role')->default(false);
+            $table->longText('avatar_path')->default(asset('images/avatarUpload/default-avatar.jpg'));
             $table->rememberToken();
             $table->timestamps();
         });

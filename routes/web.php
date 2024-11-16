@@ -5,6 +5,8 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OurInfoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -35,8 +37,9 @@ Route::post('/login', [AuthController::class, 'signInFoward'])->name('login.post
 Route::get('/logout', [AuthController::class, 'signOutFoward'])->name('logout');
 
 Route::get('/explore', [BookController::class, 'create'])->name('book.create');
-Route::get('/search', [BookController::class, 'search'])->name('book.search');
-Route::get('/book', [BookController::class, 'book'])->name('book.book');
+Route::get('/explore/search', [BookController::class, 'search'])->name('book.search');
+Route::get('/book/{id}', [BookController::class, 'show'])->name('book.show');
+
 // Route::get('/book/create', [BookController::class, 'create'])->name('book.create');
 // Route::post('/book', [BookController::class, 'store'])->name('book.store');
 // Route::get('/book/{id}', [BookController::class, 'show'])->name('book.show');
@@ -49,3 +52,8 @@ Route::get('/contact', [OurInfoController::class, 'contact'])->name('contact');
 
 Route::get('/borrow', [UserController::class, 'borrowBook'])->name('borrow');
 Route::get('/borrow_list', [UserController::class, 'borrowList'])->name('borrow_list');
+
+Route::post('/review', [ReviewController::class,'create'])->name('review.create');
+
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');

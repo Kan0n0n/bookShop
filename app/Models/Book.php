@@ -5,21 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
     use HasFactory;
+    protected $primaryKey = "book_Id";
     protected $fillable = [
         "book_Id",
         "title",
         "description",
         "book_cover_image_path",
         "isbn",
+        "pages",
+        "quantity",
+        "borrowed_copies",
         "released_date",
         "published_date",
         "author_id",
         "publisher_Id",
-        "category_Id",
+        "language",
     ];
 
     protected $casts = [
@@ -31,8 +36,13 @@ class Book extends Model
         return $this->belongsTo(Author::class, 'author_id', 'author_Id');
     }
 
-    public function category(): BelongsTo
+    public function pulisher(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_Id', 'category_Id');
+        return $this->belongsTo(Pulisher::class, 'pulisher_Id', 'pulisher_Id');
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class,'book_category','book_Id','category_Id')->withTimestamps();
     }
 }

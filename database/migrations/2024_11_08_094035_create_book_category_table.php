@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_users', function (Blueprint $table) {
+        Schema::create('book_category', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('role')->default('user');
-            $table->rememberToken();
+            $table->foreignId('book_Id')->constrained('books','book_Id');
+            $table->foreignId('category_Id')->constrained('categories','category_Id');
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_users');
+        Schema::dropIfExists('book_category');
     }
 };

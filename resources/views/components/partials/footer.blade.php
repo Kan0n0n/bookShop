@@ -4,19 +4,19 @@
 
         <div class="box">
             <h3>quick links</h3>
-            <a href="{{route("index")}}" class="{{request()->routeIs('index') ? 'chosen' : '' }}">Home</a>
-            <a href="{{route("about")}}" class="{{request()->routeIs('about') ? 'chosen' : '' }}">About</a>
-            <a href="{{route("book.create")}}"
-                class="{{request()->routeIs(patterns:'book.create') ? 'chosen' : ''}}">Explore Books</a>
-            <a href="{{route("contact")}}"
-                class="{{request()->routeIs(patterns:'contact') ? 'chosen' : ''}}">Contact</a>
+            <a href="{{ route('index') }}" class="{{ request()->routeIs('index') ? 'chosen' : '' }}">Home</a>
+            <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'chosen' : '' }}">About</a>
+            <a href="{{ route('book.create') }}"
+                class="{{ request()->routeIs(patterns: 'book.create') ? 'chosen' : '' }}">Explore Books</a>
+            <a href="{{ route('contact') }}"
+                class="{{ request()->routeIs(patterns: 'contact') ? 'chosen' : '' }}">Contact</a>
         </div>
 
         <div class="box">
             <h3>extra links</h3>
-            <a href="{{route("login")}}">Login</a>
-            <a href="{{route("signup")}}">Register</a>
-            <a href="{{route("borrow")}}" class="{{request()->routeIs(patterns:'borrow') ? 'chosen' : ''}}">Borrow
+            <a href="{{ route('login') }}">Login</a>
+            <a href="{{ route('signup') }}">Register</a>
+            <a href="{{ route('borrow') }}" class="{{ request()->routeIs(patterns: 'borrow') ? 'chosen' : '' }}">Borrow
                 Status</a>
         </div>
 

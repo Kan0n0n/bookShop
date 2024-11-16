@@ -293,6 +293,11 @@ section {
     color: var(--purple);
 }
 
+.header .header-2 .flex .logo .img {
+    width: 20%;
+    height: 30%;
+}
+
 .header .header-2 .flex .navbar a {
     margin: 0 1rem;
     font-size: 2rem;
@@ -941,7 +946,7 @@ section {
         position: absolute;
         top: 99%;
         left: 0;
-        right: 0;
+        right: 25%;
         background-color: var(--white);
         border-top: var(--border);
         border-bottom: var(--border);
