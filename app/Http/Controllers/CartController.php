@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\BookCopies;
 use App\Models\Cart;
+use App\Models\BorrowBook;
 use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
@@ -16,9 +17,16 @@ class CartController extends Controller
     {
         try
         {
+            $check = Cart::where("user_id", $request->user_id)->where("status", "onActive")->whereNotNull("checkout_date")->first();
+            if($check != null)
+            {
+                return redirect()->back()->with("error", "You have an active cart. Please go get these books first before adding more");
+            }
+
             $cart = Cart::firstOrCreate([
                 "user_id" => $request->user_id,
                 "status" => "onActive",
+                "checkout_date" => null,
             ]);
 
             Log::info("cart_create". $cart->items);
@@ -36,6 +44,15 @@ class CartController extends Controller
                     {
                         Log::info("book already in cart");
                         return redirect()->back()->with("error", "Book already in cart");
+                    }
+                }
+                $borrowed_books = BorrowBook::where("user_id", $request->user_id)->whereNot("status", "returned")->get();
+                foreach($borrowed_books as $borrowed_book)
+                {
+                    if($borrowed_book->book_id == $request->book_id)
+                    {
+                        Log::info("book already borrowed");
+                        return redirect()->back()->with("error", "Book already borrowed");
                     }
                 }
                 $book_copy = BookCopies::where("book_Id", $request->book_id)->where("status", "available")->first();
@@ -85,6 +102,55 @@ class CartController extends Controller
             $cart_item->delete();
             Log::info("Remove book complete");
             return redirect()->back()->with("success","Book removed from cart");
+        }
+        catch (\Exception $e)
+        {
+            Log::error("Error". $e->getMessage());
+            return redirect()->back()->with("error", "Something went wrong");
+        }
+    }
+
+    public function checkoutPage($id)
+    {
+        try
+        {
+            $cart = Cart::find($id);
+
+            if($cart == null)
+            {
+                Log::info("Cart not found");
+                return redirect()->route('index');
+            }
+            if($cart->items == null || count($cart->items) == 0)
+            {
+                Log::info("Cart is empty");
+                return redirect()->route('index');
+            }
+            if($cart->checkout_date != null)
+            {
+                Log::info("Cart already checked out");
+                return redirect()->route('index');
+            }
+
+            return view("user.checkout");
+        }
+        catch (\Exception $e)
+        {
+            Log::error("Error". $e->getMessage());
+            return redirect()->back()->with("error", "Something went wrong");
+        }
+    }
+
+    public function checkout(Request $request)
+    {
+        try
+        {
+            $cart = Cart::find($request->cart_id);
+            $cart->checkout_date = $request->pickup_date;
+            $cart->note = $request->notes;
+            $cart->save();
+            Log::info("Checkout complete");
+            return redirect()->route('index')->with("success", "Checkout complete");
         }
         catch (\Exception $e)
         {

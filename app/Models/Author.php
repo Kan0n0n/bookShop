@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Author extends Model
 {
     use HasFactory;
+    protected $primaryKey = "author_Id";
     protected $fillable = [
         "author_Id",
         "name",

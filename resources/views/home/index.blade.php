@@ -15,17 +15,21 @@
 
         <h1 class="title">New Books</h1>
         @if (count($books) > 0)
-            <div class="box-container">
-                @foreach ($books as $book)
-                    <a class="box" href="{!! route('book.show', ['id' => $book->book_Id]) !!}">
-                        <img class="image" src="{{ asset($book->book_cover_image_path) }}" alt="">
-                        <div class="name">{{ $book->title }}</div>
-                        <div class="name">Author: {{ $book->author->name }}</div>
-                    </a>
-                @endforeach
+            <div class="container">
+                <div class="row justify-content-center box-container">
+                    @foreach ($books as $book)
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <a class="box" href="{!! route('book.show', ['id' => $book->book_Id]) !!}">
+                                <img class="image" src="{{ asset($book->book_cover_image_path) }}" alt="">
+                                <div class="name">{{ $book->title }}</div>
+                                <div class="name">Author: {{ $book->author->name }}</div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        @else
-            <div class="box-container">
+            {{-- @else
+            <div class="col-md-4 col-sm-6 mb-4">
                 <a class="box" href="#">
                     <img class="image" src="images/doraemon-tieu-thuyet_nobita-va-ban-giao-huong-dia-cau_bia.jpg"
                         alt="">
@@ -66,7 +70,7 @@
 
             <div class="load-more" style="margin-top: 2rem; text-align:center">
                 <a href="{{ route('book.create') }}" class="option-btn">load more</a>
-            </div>
+            </div> --}}
         @endif
         <div class="load-more" style="margin-top: 2rem; text-align:center">
             <a href="{{ route('book.create') }}" class="option-btn">load more</a>

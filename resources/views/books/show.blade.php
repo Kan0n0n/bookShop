@@ -44,6 +44,9 @@
             <div class="borrow-button">
                 @if (!Auth::check())
                     <h4>Please <a href="{{ route('login') }}">login</a> to borrow this book</h4>
+                @elseif (Auth::user()->active_status == 'inactive')
+                    <h4>Please <a href="{{ route('activate', ['id' => Auth::user()->id]) }}">activate</a> your account to
+                        borrow this book</h4>
                 @else
                     <form action="{{ route('cart.add') }}" method="post" id="add-to-cart-form">
                         @csrf
@@ -174,33 +177,64 @@
         <div class="write-review">
             <h3>Write a Review</h3>
             @if (Auth::check())
-                <form action="{{ route('review.create') }}" method="post">
-                    @csrf
-                    <div class="write-review-container">
-                        <div class="write-review-container-rating">
-                            <div class="star-rating">
-                                <input type="radio" name="rating" id="rating1" value="1">
-                                <label for="rating1" class="fa fa-star"></label>
-                                <input type="radio" name="rating" id="rating2" value="2">
-                                <label for="rating2" class="fa fa-star"></label>
-                                <input type="radio" name="rating" id="rating3" value="3">
-                                <label for="rating3" class="fa fa-star"></label>
-                                <input type="radio" name="rating" id="rating4" value="4">
-                                <label for="rating4" class="fa fa-star"></label>
-                                <input type="radio" name="rating" id="rating5" value="5" checked>
-                                <label for="rating5" class="fa fa-star"></label>
+                @if ($user_review != null)
+                    <form action="{{ route('review.update') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="review_id" value="{{ $user_review->review_Id }}">
+                        <div class="write-review-container">
+                            <div class="write-review-container-rating">
+                                <div class="star-rating">
+                                    <input type="radio" name="rating" id="rating1" value="1">
+                                    <label for="rating1" class="fa fa-star"></label>
+                                    <input type="radio" name="rating" id="rating2" value="2">
+                                    <label for="rating2" class="fa fa-star"></label>
+                                    <input type="radio" name="rating" id="rating3" value="3">
+                                    <label for="rating3" class="fa fa-star"></label>
+                                    <input type="radio" name="rating" id="rating4" value="4">
+                                    <label for="rating4" class="fa fa-star"></label>
+                                    <input type="radio" name="rating" id="rating5" value="5" checked>
+                                    <label for="rating5" class="fa fa-star"></label>
+                                </div>
                             </div>
+                            <div class="write-review-container-textarea">
+                                <textarea name="review" id="review" cols="30" rows="10" placeholder="Write your review here"></textarea>
+                            </div>
+                            <div class="write-review-container-button">
+                                <input type="submit" name="update" value="Update" class="btn">
+                            </div>
+                            <input type="hidden" name="book_id" value="{{ $book->book_Id }}">
+                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                         </div>
-                        <div class="write-review-container-textarea">
-                            <textarea name="review" id="review" cols="30" rows="10" placeholder="Write your review here"></textarea>
+                    </form>
+                @else
+                    <form action="{{ route('review.create') }}" method="post">
+                        @csrf
+                        <div class="write-review-container">
+                            <div class="write-review-container-rating">
+                                <div class="star-rating">
+                                    <input type="radio" name="rating" id="rating1" value="1">
+                                    <label for="rating1" class="fa fa-star"></label>
+                                    <input type="radio" name="rating" id="rating2" value="2">
+                                    <label for="rating2" class="fa fa-star"></label>
+                                    <input type="radio" name="rating" id="rating3" value="3">
+                                    <label for="rating3" class="fa fa-star"></label>
+                                    <input type="radio" name="rating" id="rating4" value="4">
+                                    <label for="rating4" class="fa fa-star"></label>
+                                    <input type="radio" name="rating" id="rating5" value="5" checked>
+                                    <label for="rating5" class="fa fa-star"></label>
+                                </div>
+                            </div>
+                            <div class="write-review-container-textarea">
+                                <textarea name="review" id="review" cols="30" rows="10" placeholder="Write your review here"></textarea>
+                            </div>
+                            <div class="write-review-container-button">
+                                <input type="submit" name="submit" value="Submit" class="btn">
+                            </div>
+                            <input type="hidden" name="book_id" value="{{ $book->book_Id }}">
+                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                         </div>
-                        <div class="write-review-container-button">
-                            <input type="submit" name="submit" value="Submit" class="btn">
-                        </div>
-                        <input type="hidden" name="book_id" value="{{ $book->book_Id }}">
-                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                    </div>
-                </form>
+                    </form>
+                @endif
             @else
                 <p>Please <a href="{{ route('login') }}">login</a> to write a review</p>
             @endif
@@ -212,94 +246,60 @@
         <div class="member-review">
             <h3>Reviews</h3>
             <div class="review-container" id="review-container">
-                {{-- <div class="review-item">
-                    <div class="review-item-header">
-                        <div class="review-item-header-avatar">
-                            <img src="{{ asset('images/avatar.jpg') }}" alt="Avatar">
-                        </div>
-                        <div class="review-item-header-info">
-                            <div class="review-item-header-info-name">Nguyễn Văn A</div>
-                            <div class="review-item-header-info-rating">
-                                <span class="star-rating">
-                                    *****
-                                </span>
+                @if ($user_review != null)
+                    <h4>Your Review</h4>
+                    <div class="review-item">
+                        <div class="review-item-header">
+                            <div class="review-item-header-avatar">
+                                <img src="{{ asset($user_review->user->avatar_path) }}" alt="Avatar">
                             </div>
-                        </div>
-                    </div>
-                    <div class="review-datetime">
-                        <span class="review-datetime-value">Thứ tư - 30/10</span>
-                    </div>
-                    <div class="review-item-content">
-                        <p>Đây là cuốn sách rất hay, mình rất thích đọc. </p>
-                    </div>
-                </div>
-                <div class="review-item">
-                    <div class="review-item-header">
-                        <div class="review-item-header-avatar">
-                            <img src="{{ asset('images/avatar.jpg') }}" alt="Avatar">
-                        </div>
-                        <div class="review-item-header-info">
-                            <div class="review-item-header-info-name">Nguyễn Văn A</div>
-                            <div class="review-item-header-info-rating">
-                                <span class="star-rating">
-                                    *****
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="review-datetime">
-                        <span class="review-datetime-value">Thứ tư - 30/10</span>
-                    </div>
-                    <div class="review-item-content">
-                        <p>Đây là cuốn sách rất hay, mình rất thích đọc. </p>
-                    </div>
-                </div>
-                <div class="review-item">
-                    <div class="review-item-header">
-                        <div class="review-item-header-avatar">
-                            <img src="{{ asset('images/avatar.jpg') }}" alt="Avatar">
-                        </div>
-                        <div class="review-item-header-info">
-                            <div class="review-item-header-info-name">Nguyễn Văn A</div>
-                            <div class="review-item-header-info-rating">
-                                <span class="star-rating">
-                                    *****
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="review-datetime">
-                        <span class="review-datetime-value">Thứ tư - 30/10</span>
-                    </div>
-                    <div class="review-item-content">
-                        <p>Đây là cuốn sách rất hay, mình rất thích đọc. </p>
-                    </div>
-                </div> --}}
-                @if ($reviews->count() > 0)
-                    @foreach ($reviews as $review)
-                        <div class="review-item">
-                            <div class="review-item-header">
-                                <div class="review-item-header-avatar">
-                                    <img src="{{ asset($review->user->avatar_path) }}" alt="Avatar">
-                                </div>
-                                <div class="review-item-header-info">
-                                    <div class="review-item-header-info-name">{{ $review->user->name }}</div>
-                                    <div class="review-item-header-info-rating">
-                                        <div class="star-rating" style="color: #ffe400">
-                                            @for ($i = 0; $i < $review->rating; $i++)
-                                                <i class="fa fa-star"></i>
-                                            @endfor
-                                        </div>
+                            <div class="review-item-header-info">
+                                <div class="review-item-header-info-name">{{ $user_review->user->name }}</div>
+                                <div class="review-item-header-info-rating">
+                                    <div class="star-rating" style="color: #ffe400">
+                                        @for ($i = 0; $i < $user_review->rating; $i++)
+                                            <i class="fa fa-star"></i>
+                                        @endfor
                                     </div>
                                 </div>
                             </div>
-                            <div class="review-datetime">
-                                <span class="review-datetime-value">{{ $review->created_at->format('l - d/m') }}</span>
-                            </div>
-                            <div class="review-item-content">
-                                <p>{{ $review->review }}</p>
-                            </div>
                         </div>
+                        <div class="review-datetime">
+                            <span class="review-datetime-value">{{ $user_review->created_at->format('l - d/m') }}</span>
+                        </div>
+                        <div class="review-item-content">
+                            <p>{{ $user_review->review }}</p>
+                        </div>
+                    </div>
+                @endif
+                @if ($reviews->count() > 0)
+                    @foreach ($reviews as $review)
+                        @if ($review->user->id != Auth::user()->id)
+                            <div class="review-item">
+                                <div class="review-item-header">
+                                    <div class="review-item-header-avatar">
+                                        <img src="{{ asset($review->user->avatar_path) }}" alt="Avatar">
+                                    </div>
+                                    <div class="review-item-header-info">
+                                        <div class="review-item-header-info-name">{{ $review->user->name }}</div>
+                                        <div class="review-item-header-info-rating">
+                                            <div class="star-rating" style="color: #ffe400">
+                                                @for ($i = 0; $i < $review->rating; $i++)
+                                                    <i class="fa fa-star"></i>
+                                                @endfor
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-datetime">
+                                    <span
+                                        class="review-datetime-value">{{ $review->created_at->format('l - d/m') }}</span>
+                                </div>
+                                <div class="review-item-content">
+                                    <p>{{ $review->review }}</p>
+                                </div>
+                            </div>
+                        @endif
                     @endforeach
                 @else
                     <p class="no-results">No reviews</p>

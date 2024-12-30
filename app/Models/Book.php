@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Book extends Model
 {
@@ -44,5 +45,10 @@ class Book extends Model
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class,'book_category','book_Id','category_Id')->withTimestamps();
+    }
+
+    public function copies(): HasMany
+    {
+        return $this->hasMany(BookCopies::class, 'book_Id', 'book_Id');
     }
 }

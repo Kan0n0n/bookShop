@@ -67,9 +67,10 @@ class BookController extends Controller
                     break;
             }
 
-            $books = $query->paginate($request->input('per_page', 15));
+            // $books = $query->paginate($request->input('per_page', 15));
 
             $books = $query->get();
+            $books = $query->paginate($request->input('per_page', 15));
 
             if ($request->ajax()) {
                 Log::info('Returning search results', ['books' => $books]);
@@ -91,12 +92,13 @@ class BookController extends Controller
         $language = $this->languageConvert($book->language);
         $bookRecommendations = Book::where('book_Id', '!=', $book->book_Id)->inRandomOrder()->limit(5)->get();
         $reviews = Review::where('book_Id', $book->book_Id)->paginate(5);
+        $user_review = Review::where('book_Id', $book->book_Id)->where('user_Id', auth()->id())->first();
 
         if ($request->ajax()) {
             return view('components.review-list', compact('reviews'))->render();
         }
 
-        return view('books.show', compact('book','dueDate','language','bookRecommendations','reviews'))->render();
+        return view('books.show', compact('book','dueDate','language','bookRecommendations','reviews', 'user_review'))->render();
     }
 
     public function languageConvert($language)

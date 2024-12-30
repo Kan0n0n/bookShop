@@ -17,6 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'id';
     protected $fillable = [
         'name',
         'email',
@@ -27,6 +28,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'date_of_birth',
         'role',
         'avatar_path',
+        'status',
+        'active_status',
+        'activated_at',
     ];
 
     /**
@@ -51,4 +55,6 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+
 }

@@ -59,6 +59,7 @@ function fetchBooks() {
     console.log(`/explore/search?${params.toString()}`);
 
     const container = document.querySelector('.box-container');
+    const pagination = document.querySelector('.pagination');
     container.innerHTML = '<div class="loading">Loading...</div>';
 
     fetch(`/explore/search?${params.toString()}`, {
@@ -73,6 +74,7 @@ function fetchBooks() {
             return response.text();
         })
         .then((html) => {
+            console.log(html);
             container.innerHTML = html;
         })
         .catch((error) => {
@@ -106,11 +108,13 @@ function previewImage(event) {
 
 function openCart() {
     let cart = document.getElementById('cart');
-    if (cart.classList.contains('active')) {
-        cart.classList.remove('active');
+    if (cart.style.visibility === 'visible') {
+        cart.style.opacity = '0';
+        cart.style.visibility = 'hidden';
     }
     else {
-        cart.classList.add('active');
+        cart.style.opacity = '1';
+        cart.style.visibility = 'visible';
     }
 }
 

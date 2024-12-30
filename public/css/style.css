@@ -126,7 +126,9 @@ section {
 .btn,
 .option-btn,
 .delete-btn,
-.white-btn {
+.white-btn,
+.primary-btn,
+.blue-btn {
     display: inline-block;
     margin-top: 1rem;
     padding: 1rem 3rem;
@@ -135,6 +137,17 @@ section {
     font-size: 1.8rem;
     border-radius: 0.5rem;
     text-transform: capitalize;
+    text-decoration: none;
+}
+
+.blue-btn,
+.btn {
+    background-color: var(--blue);
+}
+
+.blue-btn:hover
+{
+    background-color: var(--black);
 }
 
 .btn:hover,
@@ -759,49 +772,77 @@ section {
     line-height: 1.5;
 }
 
-.products .box-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, 30rem);
-    align-items: flex-start;
-    gap: 3rem;
-    justify-content: center;
+.products {
+    padding: 0 10rem;
 }
 
-.products .box-container .box {
+.products .box {
     border-radius: 0.5rem;
     background-color: var(--white);
     box-shadow: var(--box-shadow);
-    padding: 2rem;
+    padding: 5rem;
     text-align: center;
     border: var(--border);
     position: relative;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
 }
 
-.products .box-container .box .image {
-    width: 80%;
-    height: auto;
-    object-fit: cover;
+.products .box .image {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: contain;
 }
 
-.products .box-container .box .name {
+.products .box .name {
     padding: 1rem 0;
     font-size: 2rem;
     color: var(--black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
-.products .box-container .box:hover {
+.products .box:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     opacity: 0.8;
     transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.products .box:hover .name {
+    color: var(--purple);
+    content: attr(data-full-name);
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+}
+
+.products .box:hover .categories {
+    display: none;
+}
+
+.products .box:hover .Language {
+    display: none;
+}
+
+.products .box:hover .date {
+    display: none;
 }
 
 .products .filter-container {
     margin-bottom: 2rem;
     padding: 1rem;
-    background: #dee4ad;
+    /* background: #dee4ad; */
     border-radius: 5px;
 }
 
@@ -816,6 +857,16 @@ section {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
+    height: 30px;
+    font-size: 12px;
+}
+
+.products .filter-container .search-section input:focus {
+    border-color: #e65ff8;
+}
+
+.products .filter-container .search-section input::placeholder {
+    color: #aaa;
 }
 
 .products .filter-container .search-section input {
@@ -825,13 +876,15 @@ section {
 .products .filter-container .search-section .category-filter {
     position: relative;
     width: 200px;
-    margin: 10px 0;
+    height: 30px;
+    /* margin: 10px 0; */
 }
 
 .products .filter-container .search-section .category-filter h4 {
     background: #f5f5f5;
     padding: 10px 15px;
     border-radius: 5px;
+    font-size: 12px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -1407,7 +1460,7 @@ section {
         display: inline-block;
     }
 
-    .header .header-2 .flex .navbar {
+    /* .header .header-2 .flex .navbar {
         position: absolute;
         top: 99%;
         left: 0;
@@ -1426,7 +1479,7 @@ section {
         display: block;
         font-size: 2.5rem;
         margin: 2rem;
-    }
+    } */
 
     .home .content h3 {
         font-size: 3.5rem;
@@ -1985,4 +2038,14 @@ td {
 .borrow-list .box-container .tb .tb-body .tb-body-child {
     background-color: #f9f9f9;
     font-size: 14px;
+}
+
+.primary-btn,
+.btn {
+    background-color: #28a745;
+
+}
+
+.primary-btn .btn:hover {
+    background-color: #218838;
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Cart_Items;
+use App\Models\BorrowBook;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +18,8 @@ class Cart extends Model
     protected $fillable = [
         "user_id",
         "status",
+        "checkout_date",
+        "note",
     ];
 
     protected $casts = [
@@ -30,5 +34,10 @@ class Cart extends Model
     public function items(): HasMany
     {
         return $this->hasMany(Cart_Item::class);
+    }
+
+    public function borrowBooks(): HasMany
+    {
+        return $this->hasMany(BorrowBook::class);
     }
 }

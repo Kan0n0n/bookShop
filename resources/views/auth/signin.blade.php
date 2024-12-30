@@ -23,6 +23,15 @@
                         {{ $message }}
                     </div>
                 @enderror
+                @if (\Session::has('success'))
+                    <div class="alert alert-success" role="alert">
+                        {!! \Session::get('success') !!}
+                    </div>
+                @elseif (\Session::has('status'))
+                    <div class="alert alert-success" role="alert">
+                        {!! \Session::get('success') !!}
+                    </div>
+                @endif
                 @if (\Session::has('error'))
                     <div class="alert alert-danger" role="alert">
                         {!! \Session::get('error') !!}
@@ -30,6 +39,7 @@
                 @endif
             </div>
             <input type="submit" name="submit" value="login now" class="btn">
+            <p>forgot password? <a href="{{ route('password.request') }}">click here</a></p>
             <p>don't have an account? <a href="{{ route('signup') }}">register now</a></p>
         </form>
 

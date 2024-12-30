@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Registered;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -27,7 +30,19 @@ class AuthController extends Controller
             $credentials = $request->only('email', 'password');
             if (Auth::attempt($credentials)) {
                 Log::info('Auth Complete', ['email' => $request->email]);
-                return redirect()->route('index')->with('success', 'Login successful');
+                if(Auth::user()->email_verified_at == null){
+                    return redirect()->route('verification.notice')->with('error', 'Please verify your email first');
+                }
+                if(Auth::user()->status == false){
+                    Auth::logout();
+                    return back()->with('error', 'Your account is blocked contact admin if you think this is a mistake!');
+                }
+                if(Auth::user()->role == true){
+                    return redirect()->route('admin')->with('success', 'Login successful');
+                }
+                else{
+                    return redirect()->route('index')->with('success', 'Login successful');
+                }
             }
 
             Log::warning('Log Error', ['email' => $request->email]);
@@ -82,9 +97,8 @@ class AuthController extends Controller
             Log::info('Registered event fired');
 
             Auth::login($user);
-            Log::info('User logged in');
 
-            return redirect()->route('index')->with('success', 'Registration successful');
+            return redirect()->route('verification.notice')->with('success', 'Sign up successful');
         }
 
         return view("auth.signup");
@@ -94,5 +108,52 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('index')->with('success', 'Logout successful');
+    }
+
+    public function showForgotPasswordForm()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+                    ? back()->with(['status' => __($status)])
+                    : back()->withErrors(['email' => __($status)]);
+    }
+
+    public function showResetForm($token)
+    {
+        return view('auth.reset-password', ['token' => $token]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+                $user->save();
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+                    ? redirect()->route('login')->with('status', __($status))
+                    : back()->withErrors(['email' => [__($status)]]);
     }
 }

@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
                 $cart = Cart::with(['items.book_copy.book.author'])
                     ->where('user_id', auth()->id())
                     ->where('status', 'onActive')
+                    ->where('checkout_date', null)
                     ->first();
 
                 $view->with('cart', $cart);

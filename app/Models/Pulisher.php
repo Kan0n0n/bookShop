@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Pulisher extends Model
 {
     use HasFactory;
-
+    protected $primaryKey = "pulisher_Id";
     protected $fillable = [
-        "pulishers_Id",
+        "pulisher_Id",
         "name",
         "address",
         "phone",
@@ -19,6 +19,6 @@ class Pulisher extends Model
 
     public function books(): HasMany
     {
-        return $this->hasMany(Book::class, 'pulishers_Id', 'pulishers_Id');
+        return $this->hasMany(Book::class, 'pulisher_Id', 'pulisher_Id');
     }
 }

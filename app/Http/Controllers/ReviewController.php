@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ReviewController extends Controller
 {
@@ -52,14 +53,36 @@ class ReviewController extends Controller
     public function edit(Review $review)
     {
         //
+
     }
 
-    /**
+/**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request)
     {
         //
+        try
+        {
+            $editReview = Review::find($request->review_id);
+            log::info($editReview);
+            if($editReview == null)
+            {
+                return back()->with('error','Review not found');
+            }
+            if($request->rating == null || $request->review == null)
+            {
+                return back()->with('error','Rating and review cannot be empty');
+            }
+            $editReview->rating = $request->rating;
+            $editReview->review = $request->review;
+            $editReview->save();
+            return back()->with('success','Review updated successfully');
+        }
+        catch (\Exception $e)
+        {
+            return back()->with('error','An error occurred while processing your request');
+        }
     }
 
     /**
