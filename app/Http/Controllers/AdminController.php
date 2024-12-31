@@ -65,15 +65,6 @@ class AdminController extends Controller
                 ->take(5)
                 ->get();
 
-            log::info($totalBooks);
-            log::info($totalUsers);
-            log::info($activeBorrows);
-            log::info($totalRevenue);
-            log::info($topBorrowers);
-            log::info($popularBooks);
-            log::info('recentActivities');
-            log::info($recentActivities);
-
             return view('Dashboard.index', compact(
                 'totalBooks',
                 'totalUsers',
@@ -772,7 +763,6 @@ class AdminController extends Controller
         if(!Auth::user() || !Auth::user()->role == true)
             return redirect()->route('index');
         $borrowBooks = Cart::wherehas('borrowBooks')->get();
-        log::info($borrowBooks);
         BorrowBook::checkOverdue();
         return view('Dashboard.borrow_book', compact('borrowBooks'));
     }

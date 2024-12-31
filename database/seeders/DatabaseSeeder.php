@@ -25,9 +25,12 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         Pulisher::factory(10)->create();
 
+
         $csv = Reader::createFromPath(database_path('seeders/cleaned_books.csv'), 'r');
         $csv->setHeaderOffset(0);
         $records = $csv->getRecords();
+
+        $count = 0;
 
         foreach ($records as $record) {
             $author = Author::firstOrCreate([
@@ -35,7 +38,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $pulisher_id = rand(1, 10);
-            $quantity = rand(1, 1000);
+            $quantity = rand(1, 50);
 
             $pages = intval($record['num_pages']);
             if(!$pages || $pages < 1) {
@@ -69,6 +72,11 @@ class DatabaseSeeder extends Seeder
                     'copy_number' => $i + 1,
                     'status' => 'available',
                 ]);
+            }
+
+            $count++;
+            if ($count >= 500) {
+                break;
             }
         }
     }
