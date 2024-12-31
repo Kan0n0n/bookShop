@@ -502,16 +502,10 @@ section {
     align-items: center;
 }
 
-.header .header-2 .flex .logo {
-    font-size: 2.5rem;
-    color: var(--purple);
-    width: 10%;
-    text-decoration: none;
-}
 
 .header .header-2 .flex .logo .img {
-    width: 80%;
-    height: 30%;
+    width: 150px;
+    height: auto;
     object-fit: cover;
     cursor: pointer;
 }

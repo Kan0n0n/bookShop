@@ -78,8 +78,10 @@
             <p> <span class="label">Language:</span> <span class="value">Vietnamese</span> </p>
             <p> <span class="label">Pages:</span> <span class="value">192</span> </p> --}}
             <p> <span class="label">Publisher:</span> <span class="value">{{ $book->pulisher->name }}</span> </p>
-            <p> <span class="label">Publication Date:</span> <span
-                    class="value">{{ $book->published_date->format('d-m-Y') }}</span> </p>
+            @if ($book->published_date != null)
+                <p> <span class="label">Publication Date:</span> <span
+                        class="value">{{ $book->published_date->format('d-m-Y') }}</span> </p>
+            @endif
             <p> <span class="label">ISBN:</span> <span class="value">{{ $book->isbn }}</span> </p>
             @if ($book->categories->count() > 0)
                 <p> <span class="label">Categories:</span>
@@ -106,7 +108,7 @@
             {{-- <p>Đây là cuốn sách thứ 2 trong bộ tiểu thuyết Doraemon. Câu chuyện kể về cuộc phiêu lưu của Nobita và các bạn
                 trong chuyến đi tìm kiếm bản giao hưởng địa cầu. </p> --}}
             @if ($book->description)
-                <p>{{ $book->description }}</p>
+                <p style="font-size: 1.2rem;">{{ $book->description }}</p>
             @else
                 <p>No description</p>
             @endif

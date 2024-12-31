@@ -8,6 +8,7 @@ use App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class BorrowBook extends Model
 {
@@ -31,12 +32,12 @@ class BorrowBook extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class, 'book_id', 'book_Id');
     }
 
     public function book_copy()
@@ -47,5 +48,23 @@ class BorrowBook extends Model
     public function cart()
     {
         return $this->belongsTo(Cart::class);
+    }
+
+    protected static function booted()
+    {
+        static::retrieved(function ($borrowBook) {
+            if ($borrowBook->status === 'borrowed' &&
+                $borrowBook->due_date < Carbon::now()) {
+                $borrowBook->status = 'overdue';
+                $borrowBook->save();
+            }
+        });
+    }
+
+    public static function checkOverdue()
+    {
+        return static::where('status', 'borrowed')
+            ->where('due_date', '<', Carbon::now())
+            ->update(['status' => 'overdue']);
     }
 }

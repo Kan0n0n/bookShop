@@ -9,6 +9,11 @@ use App\Models\Pulisher;
 use App\Models\BookCopies;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use League\Csv\Reader;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,30 +23,53 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        Pulisher::factory(10)->create();
 
-        Author::factory(13)->create();
-        Category::factory(10)->create();
-        Pulisher::factory(20)->create();
-        Book::factory(100)->create();
+        $csv = Reader::createFromPath(database_path('seeders/cleaned_books.csv'), 'r');
+        $csv->setHeaderOffset(0);
+        $records = $csv->getRecords();
 
-        $books = Book::all();
+        foreach ($records as $record) {
+            $author = Author::firstOrCreate([
+                'name' => $record['authors'],
+            ]);
 
-        foreach ($books as $book) {
-            $copies = [];
-            $totalCopies = $book->quantity;
-            $borrowedCount = $book->borrowed_copies;
+            $pulisher_id = rand(1, 10);
+            $quantity = rand(1, 1000);
 
-            for ($i = 1; $i <= $totalCopies; $i++) {
-                $copies[] = [
-                    'book_id' => $book->book_Id,
-                    'copy_number' => $i,
-                    'status' => $i <= $borrowedCount ? 'borrowed' : 'available',
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ];
+            $pages = intval($record['num_pages']);
+            if(!$pages || $pages < 1) {
+                $pages = rand(100, 500);
             }
 
-            BookCopies::insert($copies);
+            $book = Book::firstOrCreate([
+                'title' => $record['title'],
+                'description' => $record['description'],
+                'book_cover_image_path' => $record['image_path'],
+                'isbn' => $record['isbn10'],
+                'pages' => $pages,
+                'quantity' => $quantity,
+                'borrowed_copies' => 0,
+                'author_id' => $author->author_Id,
+                'pulisher_Id' => $pulisher_id,
+                'language' => "English",
+            ]);
+
+            $categories = explode(',', $record['categories']);
+            foreach ($categories as $category) {
+                $category = Category::firstOrCreate([
+                    'name' => $category,
+                ]);
+                $book->categories()->attach($category->category_Id);
+            }
+
+            for ($i = 0; $i < $quantity; $i++) {
+                BookCopies::create([
+                    'book_Id' => $book->book_Id,
+                    'copy_number' => $i + 1,
+                    'status' => 'available',
+                ]);
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use League\Csv\Reader;
 
 class IndexController extends Controller
 {
@@ -18,6 +20,9 @@ class IndexController extends Controller
             }
         }
         $books = Book::all();
+
+        $csv = Reader::createFromPath(database_path('seeders/books.csv'), 'r');
+        log::info($csv);
 
         if (count($books) <= 6) {
             return view('home.index', ['books' => $books]);

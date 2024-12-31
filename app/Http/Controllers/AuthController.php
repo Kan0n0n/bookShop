@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\BorrowBook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -38,9 +39,11 @@ class AuthController extends Controller
                     return back()->with('error', 'Your account is blocked contact admin if you think this is a mistake!');
                 }
                 if(Auth::user()->role == true){
+                    BorrowBook::checkOverdue();
                     return redirect()->route('admin')->with('success', 'Login successful');
                 }
                 else{
+                    BorrowBook::checkOverdue();
                     return redirect()->route('index')->with('success', 'Login successful');
                 }
             }

@@ -18,7 +18,8 @@ class UserController extends Controller
     {
         $checkoutCart = Cart::where('user_id', Auth::user()->id)->where('status', 'onActive')->whereNotNull('checkout_date')->first();
         log::info($checkoutCart);
-        $borrowed_books = borrowBook::where('user_id', Auth::user()->id)->whereNot('status', 'returned')->get();
+        $borrowed_books = BorrowBook::where('user_id', Auth::user()->id)->whereNot('status', 'returned')->get();
+        BorrowBook::checkOverdue();
         return view('user.borrow_status', compact('checkoutCart', 'borrowed_books'));
     }
 

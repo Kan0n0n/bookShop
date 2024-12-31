@@ -53,6 +53,10 @@
                                 <i class="ti-settings text-primary"></i>
                                 Change Password
                             </a>
+                            <a class="dropdown-item" href="{{ URL::to('/') }}">
+                                <i class="ti-power-off text-primary"></i>
+                                Return to Home
+                            </a>
                             <a class="dropdown-item" href="{{ URL::to('/logout') }}">
                                 <i class="ti-power-off text-primary"></i>
                                 Logout

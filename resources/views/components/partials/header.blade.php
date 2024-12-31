@@ -62,15 +62,13 @@
                                     class="nav-link {{ request()->routeIs('book.create') ? 'chosen' : '' }}">Explore
                                     Books</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ request()->routeIs('contact') ? '#' : route('contact') }}"
-                                    class="nav-link {{ request()->routeIs('contact') ? 'chosen' : '' }}">Contact</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ request()->routeIs('borrow') ? '#' : route('borrow') }}"
-                                    class="nav-link {{ request()->routeIs('borrow') ? 'chosen' : '' }}">Borrow
-                                    Status</a>
-                            </li>
+                            @if (Auth::check())
+                                <li class="nav-item">
+                                    <a href="{{ request()->routeIs('borrow') ? '#' : route('borrow') }}"
+                                        class="nav-link {{ request()->routeIs('borrow') ? 'chosen' : '' }}">Borrow
+                                        Status</a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </nav>
@@ -93,8 +91,12 @@
                             Account</a>
                         <a href="{{ route('user.edit', ['id' => Auth::user()->id]) }}" class="primary-btn">Edit
                             Profile</a>
-                        <a href="{{ route('user.password.edit', ['id' => Auth::user()->id]) }}"
-                            class="blue-btn">Change Password</a>
+                        <a href="{{ route('user.password.edit', ['id' => Auth::user()->id]) }}" class="blue-btn">Change
+                            Password</a>
+                        @if (Auth::user()->role == 1)
+                            <a href="{{ route('admin') }}" class="delete-btn">
+                                Foward to Admin</a>
+                        @endif
                         <a href="{{ route('logout') }}" class="delete-btn">logout</a>
                     @else
                         <a href="{{ route('login') }}" class="white-btn">Login</a>

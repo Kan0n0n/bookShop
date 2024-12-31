@@ -89,7 +89,7 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         $dueDate = now()->addWeeks(2)->format('D, M d, Y');
 
-        $language = $this->languageConvert($book->language);
+        $language = $book->language;
         $bookRecommendations = Book::where('book_Id', '!=', $book->book_Id)->inRandomOrder()->limit(5)->get();
         $reviews = Review::where('book_Id', $book->book_Id)->paginate(5);
         $user_review = Review::where('book_Id', $book->book_Id)->where('user_Id', auth()->id())->first();

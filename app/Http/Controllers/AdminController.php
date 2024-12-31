@@ -38,16 +38,27 @@ class AdminController extends Controller
 
             $borrowers = BorrowBook::all();
             $topBorrowers = BorrowBook::select('user_id', BorrowBook::raw('count(*) as total_borrows'))
+            ->with('user')
             ->groupBy('user_id')
             ->orderBy('total_borrows', 'desc')
-            ->take(3)
+            ->take(5)
             ->get();
 
-            $popularBooks = BorrowBook::select('book_id', BorrowBook::raw('count(*) as borrow_count'))
+            $popularBooks = BorrowBook::select('book_id')
+            ->with('book_copy.book')
+            ->selectRaw('COUNT(*) as borrow_count')
             ->groupBy('book_id')
             ->orderBy('borrow_count', 'desc')
-            ->take(3)
-            ->get();
+            ->take(5)
+            ->get()
+            ->map(function($borrow) {
+                return [
+                    'book_image' => Book::find($borrow->book_id)->book_cover_image_path,
+                    'title' => Book::find($borrow->book_id)->title,
+                    'author' => Book::find($borrow->book_id)->author->name,
+                    'borrow_count' => $borrow->borrow_count
+                ];
+            });
 
             $recentActivities = BorrowBook::with(['user', 'book'])
                 ->latest()
@@ -762,6 +773,7 @@ class AdminController extends Controller
             return redirect()->route('index');
         $borrowBooks = Cart::wherehas('borrowBooks')->get();
         log::info($borrowBooks);
+        BorrowBook::checkOverdue();
         return view('Dashboard.borrow_book', compact('borrowBooks'));
     }
 
