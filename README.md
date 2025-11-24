@@ -21,12 +21,16 @@ composer install
 
 - Then create the necessary database
 ```
-php artisan make:database bookshop
+In my sql server create db bookshop
 ```
 
 - Then run migrate
 ```
 php artisan migrate
+```
+- Create seeder dataset using
+```
+php artisan db:seed
 ```
 - To run Laravel web app use
 ```
